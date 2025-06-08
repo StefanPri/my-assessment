@@ -166,7 +166,6 @@ def question_3(df_balances):
         float: The anualized CPR of the loan portfolio as a percent.
     """
     #first copy and clean the dataframe to remove any rows with a zero loan balance.
-    #since we are changing the dataframe, we need to make a copy.
     df = df_balances.copy()
     df = df[df['LoanBalanceStart'] > 0].dropna()
 
