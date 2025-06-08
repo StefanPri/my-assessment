@@ -26,9 +26,12 @@ def question_1():
     #Use JOIN to combine the two tables on the CustomerID column.
     #Group the results by CustomerClass.
     #Use AVG to calculate the average income per CustomerClass.
-    qry = """SELECT credit.CustomerClass, AVG(customers.Income) AS AverageIncome
+    qry = """SELECT 
+                credit.CustomerClass,
+                AVG(customers.Income) AS AverageIncome
             FROM credit
-            JOIN customers ON credit.CustomerID = customers.CustomerID
+            JOIN customers 
+                ON credit.CustomerID = customers.CustomerID
             GROUP BY credit.CustomerClass
         """
 
@@ -41,39 +44,32 @@ def question_2():
     Ensure consistent use of either the abbreviated or full version of each province, matching the format found in the customer table.
     """
 
-    # #Join the two tables on the CustomerID column.
-    # #Filter the results to only include rejected applications.
-    # #Count the number of rejected applications per province.
-    # #Group the results by province.
-    # #This query shows the regions abbreviated or full version
-    # #Change Region to Province.
-    # 
-    # qry = """SELECT Region AS Province, COUNT(*) as RejectedApplications
-    #         FROM loans
-    #         JOIN customers ON loans.CustomerID = customers.CustomerID
-    #         WHERE loans.ApprovalStatus = 'Rejected'
-    #         GROUP BY customers.Region
-    #     """
-
+    #Join the two tables on the CustomerID column.
+    #Filter the results to only include rejected applications.
+    #Count the number of rejected applications per province.
+    #Group the results by province.
+    #This query shows the regions abbreviated or full version
+    #Change Region to Province.
     #Since we need to use the full version or abbreviated version of the province, we can use a CASE statement to return the full version.
     #To ensure clarity and to avoid confusion, we choose to use the full version.
     #Noticed that NW did not have a full version, chose "NW" as "NorthWest"
     qry = """SELECT 
-            CASE 
-                WHEN Region = 'LP' THEN 'Limpopo'
-                WHEN Region = 'GT' THEN 'Gauteng'
-                WHEN Region = 'KZN' THEN 'KwaZulu-Natal'
-                WHEN Region = 'MP' THEN 'Mpumalanga'
-                WHEN Region = 'NC' THEN 'NorthernCape'
-                WHEN Region = 'WC' THEN 'WesternCape'
-                WHEN Region = 'EC' THEN 'EasternCape'
-                WHEN Region = 'FS' THEN 'FreeState'
-                WHEN Region = 'NW' THEN 'NorthWest'
-                ELSE Region
-            END AS Province,
-            COUNT(*) as RejectedApplications
+                CASE 
+                    WHEN Region = 'LP' THEN 'Limpopo'
+                    WHEN Region = 'GT' THEN 'Gauteng'
+                    WHEN Region = 'KZN' THEN 'KwaZulu-Natal'
+                    WHEN Region = 'MP' THEN 'Mpumalanga'
+                    WHEN Region = 'NC' THEN 'NorthernCape'
+                    WHEN Region = 'WC' THEN 'WesternCape'
+                    WHEN Region = 'EC' THEN 'EasternCape'
+                    WHEN Region = 'FS' THEN 'FreeState'
+                    WHEN Region = 'NW' THEN 'NorthWest'
+                    ELSE Region
+                END AS Province,
+                COUNT(*) as RejectedApplications
             FROM loans
-            JOIN customers ON loans.CustomerID = customers.CustomerID
+            JOIN customers 
+                ON loans.CustomerID = customers.CustomerID
             WHERE loans.ApprovalStatus = 'Rejected'
             GROUP BY Province
         """
@@ -103,8 +99,10 @@ def question_3():
                 loans.ApprovalStatus,
                 credit.CreditScore
             FROM customers
-            JOIN loans ON customers.CustomerID = loans.CustomerID
-            JOIN credit ON customers.CustomerID = credit.CustomerID
+            JOIN loans 
+                ON customers.CustomerID = loans.CustomerID
+            JOIN credit 
+                ON customers.CustomerID = credit.CustomerID
         """
 
     return qry
@@ -143,7 +141,9 @@ def question_4():
                 ON customers.CustomerID = repayments.CustomerID
                 AND CAST(strftime('%m', repayments.RepaymentDate) AS INTEGER) = months.MonthID
                 AND strftime('%H', repayments.RepaymentDate) BETWEEN '06' AND '18'
-            GROUP BY customers.CustomerID, months.MonthName
+            GROUP BY 
+                customers.CustomerID,
+                months.MonthName
         """
 
     return qry
@@ -235,7 +235,10 @@ def question_6():
                 FROM customers
             ),
             unique_filtered_customers AS (
-                SELECT CustomerID, Age, Gender
+                SELECT
+                    CustomerID,
+                    Age,
+                    Gender
                 FROM distinct_customers
                 WHERE rn = 1
             ),
@@ -255,9 +258,11 @@ def question_6():
                 original.Gender
             FROM numbered_customers AS original
             JOIN numbered_customers AS shifted
-              ON original.Gender = shifted.Gender
-             AND shifted.row_in_gender = ((original.row_in_gender + 2 - 1) % original.gender_count) + 1
-            ORDER BY original.Gender, original.CustomerID;
+                ON original.Gender = shifted.Gender
+                AND shifted.row_in_gender = ((original.row_in_gender + 2 - 1) % original.gender_count) + 1
+            ORDER BY 
+                original.Gender,
+                original.CustomerID;
 
             SELECT * FROM corrected_customers;
         """
@@ -315,7 +320,9 @@ def question_7():
                 corrected_customers.CorrectedAge,
                 corrected_customers.Gender
             ORDER BY
-                AgeCategory, Rank, corrected_customers.CustomerID
+                AgeCategory,
+                Rank,
+                corrected_customers.CustomerID
         """
 
     return qry

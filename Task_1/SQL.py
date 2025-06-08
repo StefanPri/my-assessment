@@ -25,9 +25,14 @@ def question_1():
 
     # The inner query is used to find the duplicated customer IDs. It returns a list of customer IDs that appear more than once.
     # The outer query checks the customers table for the IDs from the inner query and returns the name, surname and customer ID of the customers.
-    qry = """SELECT DISTINCT Name, Surname, CustomerID FROM customers
+    qry = """SELECT DISTINCT 
+                Name,
+                Surname,
+                CustomerID
+            FROM customers
             WHERE CustomerID IN (
-                SELECT CustomerID FROM customers
+                SELECT CustomerID
+                FROM customers
                 GROUP BY CustomerID
                 HAVING COUNT(*)>1
             )
@@ -41,7 +46,10 @@ def question_2():
     """
 
     # Select the name, surname and income where the gender is female and order the results by income in descending order.
-    qry = """SELECT Name, Surname, Income 
+    qry = """SELECT
+                Name,
+                Surname,
+                Income 
             FROM customers
             WHERE Gender = 'Female'
             ORDER BY Income DESC
@@ -61,8 +69,12 @@ def question_3():
     #Count all the loans 
     #Divide the number of approved loans by the total number of loans and multiply by 100 to get the percentage.
     #Group the results by LoanTerm.
-    qry = """SELECT LoanTerm,
-        100.0*SUM(CASE WHEN ApprovalStatus = 'Approved' THEN 1 ELSE 0 END)/COUNT(*) AS PercentageApproved
+    qry = """SELECT 
+                LoanTerm,
+                100.0*SUM(CASE 
+                    WHEN ApprovalStatus = 'Approved' THEN 1 
+                    ELSE 0 
+                END)/COUNT(*) AS PercentageApproved
         FROM loans
         GROUP BY LoanTerm
       """
@@ -76,7 +88,9 @@ def question_4():
     Return columns `CustomerClass` and `Count`
     """
     #Select the CustomerClass and Count number of clients 
-    qry = """SELECT CustomerClass, COUNT(*) AS Count
+    qry = """SELECT 
+                CustomerClass,
+                COUNT(*) AS Count
             FROM credit
             GROUP BY CustomerClass
         """
